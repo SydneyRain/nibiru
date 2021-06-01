@@ -2,9 +2,9 @@
   "name": "nibiru",
   "version": "3.0.0",
   "description": "An all-in-one, multi-platform bot with tons of extremely useful and fun commands!",
-  "main": "index.js",
+  "main": "discord/client/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start_discord": "ts-node-dev --respawn --transpile-only --poll ./discord/index.ts"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,18 @@
   "bugs": {
     "url": "https://github.com/SydneyRain/nibiru/issues"
   },
-  "homepage": "https://github.com/SydneyRain/nibiru#readme"
+  "homepage": "https://github.com/SydneyRain/nibiru#readme",
+  "dependencies": {
+    "@typeit/discord": "^5.0.10",
+    "discord.js": "git+https://github.com/discordjs/discord.js.git",
+    "js-yaml": "^4.1.0",
+    "mongoose": "^5.12.12",
+    "reflect-metadata": "^0.1.13",
+    "ts-node-dev": "^1.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.1",
+    "tslib": "^2.2.0",
+    "typescript": "^4.3.2"
+  }
 }

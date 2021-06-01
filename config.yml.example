@@ -1,0 +1,7 @@
+botConfig:
+    # Configuration for Discord
+    discordConfig:
+      # The bot token to login to Discord. Get a token from here: https://discordapp.com/developers/applications/me
+      botToken: 'YOUR_TOKEN_HERE'
+      # This is the default prefix the bot will use. While the bot normally uses slash commands, it can also use normal command prefixes.
+      botPrefix: 'n+'
