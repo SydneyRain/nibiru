@@ -21,6 +21,7 @@
     "discord.js": "git+https://github.com/discordjs/discord.js.git",
     "js-yaml": "^4.1.0",
     "mongoose": "^5.12.12",
+    "ping": "^0.4.1",
     "reflect-metadata": "^0.1.13",
     "ts-node-dev": "^1.1.6"
   },

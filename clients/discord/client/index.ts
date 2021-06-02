@@ -13,9 +13,11 @@ class NibiruClient extends DiscordTS {
     constructor() {
         super({
             intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+            presence: {
+                activities: [{name: "Serving 1 servers!", type: "WATCHING"}], status: "dnd"
+            },
             classes: [
-                Path.join(__dirname, "../commands", "*.ts"), // Regular commands
-                Path.join(__dirname, "../slash_commands", "*.ts"), // Slash commands
+                Path.join(__dirname, "../commands", "*.ts"), // Commands
                 Path.join(__dirname, "../events", "*.ts") // Events
             ],
             silent: false,
