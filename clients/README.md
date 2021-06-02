@@ -1,0 +1,3 @@
+Currently supported clients
+
+* Discord

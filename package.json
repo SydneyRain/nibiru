@@ -2,7 +2,7 @@
   "name": "nibiru",
   "version": "3.0.0",
   "description": "An all-in-one, multi-platform bot with tons of extremely useful and fun commands!",
-  "main": "discord/client/index.ts",
+  "main": "run.ts",
   "scripts": {
     "start_discord": "ts-node-dev --respawn --transpile-only --poll ./discord/index.ts"
   },

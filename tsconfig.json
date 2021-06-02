@@ -18,7 +18,7 @@
         "emitDecoratorMetadata": true
     },
     "include": [
-        "discord/**/*"
+        "clients/discord/**/*"
     ],
     "exclude": [
         "node_modules"

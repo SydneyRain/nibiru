@@ -1,6 +1,11 @@
+/*---------------------------------------------------*/
 import { Client as DiscordTS } from "@typeit/discord";
 import { Intents } from "discord.js";
+/*---------------------------------------------------*/
+import * as fs from 'fs';
+import * as yaml from "js-yaml";
 import Path from "path";
+/*---------------------------------------------------*/
 
 class NibiruClient extends DiscordTS {
     constructor() {
@@ -15,6 +20,12 @@ class NibiruClient extends DiscordTS {
             requiredByDefault: true
         });
     }
+    
+   public async start() {
+       const config = yaml.load(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
+       await this.login(config.botConfig.discordConfig.token);
+       console.log("yay! :)");
+   }
 }
 
 export default NibiruClient;
