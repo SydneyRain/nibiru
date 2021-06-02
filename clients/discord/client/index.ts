@@ -6,6 +6,8 @@ import * as fs from 'fs';
 import * as yaml from "js-yaml";
 import Path from "path";
 /*---------------------------------------------------*/
+const config = yaml.load(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
+/*---------------------------------------------------*/
 
 class NibiruClient extends DiscordTS {
     constructor() {
@@ -17,14 +19,25 @@ class NibiruClient extends DiscordTS {
                 Path.join(__dirname, "../events", "*.ts") // Events
             ],
             silent: false,
-            requiredByDefault: true
+            requiredByDefault: true,
+            slashGuilds: ["550144880655990785"] // For debugging. Comment this out or change the server ID.
         });
     }
     
    public async start() {
-       const config = yaml.load(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
-       await this.login(config.botConfig.discordConfig.token);
-       console.log("yay! :)");
+       await this.login(config.botConfig.discordConfig.token)
+        .then(() => {
+            // For slash commands
+            this.clearSlashes(); 
+            this.initSlashes();
+            // todo: Add a real logger...
+            console.log(`Logged in as ${this.user.tag} (${this.user.id})`)
+        });
+
+        // For slash command interactions
+        this.on("interaction", (interaction) => {
+            this.executeSlash(interaction); 
+        });
    }
 }
 
