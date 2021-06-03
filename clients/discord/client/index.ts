@@ -3,6 +3,7 @@ import { Client as DiscordTS } from "@typeit/discord";
 import { Intents } from "discord.js";
 /*---------------------------------------------------*/
 import * as fs from 'fs';
+import * as JsLogger from 'js-logger';
 import * as yaml from "js-yaml";
 import Path from "path";
 /*---------------------------------------------------*/
@@ -14,10 +15,10 @@ class NibiruClient extends DiscordTS {
         super({
             intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
             presence: {
-                activities: [{name: "Serving 1 servers!", type: "WATCHING"}], status: "dnd"
+                activities: [{name: "my favorite show", type: "WATCHING"}], status: "dnd"
             },
             classes: [
-                Path.join(__dirname, "../commands", "*.ts"), // Commands
+                Path.join(__dirname, "../commands/*", "*.ts"), // Commands
                 Path.join(__dirname, "../events", "*.ts") // Events
             ],
             silent: false,

@@ -19,6 +19,8 @@
   "dependencies": {
     "@typeit/discord": "^5.0.10",
     "discord.js": "git+https://github.com/discordjs/discord.js.git",
+    "insult": "0.0.3",
+    "js-logger": "^1.6.1",
     "js-yaml": "^4.1.0",
     "mongoose": "^5.12.12",
     "ping": "^0.4.1",
