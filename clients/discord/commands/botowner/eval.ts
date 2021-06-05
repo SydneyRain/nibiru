@@ -1,11 +1,13 @@
 /*---------------------------------------------------*/
 import { Description, Discord, Guard, Option, Slash } from "@typeit/discord";
 import { CommandInteraction } from "discord.js";
+import { IsBotOwner } from "../../guards/IsBotOwner";
 /*---------------------------------------------------*/
 
 @Discord()
 export abstract class EvalCommand {
     @Slash("eval")
+    @Guard(IsBotOwner)
     @Description('Run eval command. (BOT OWNER ONLY)')
     async eval(
         @Option("code", {description: "The code to execute.", required: true})

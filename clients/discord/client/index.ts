@@ -32,6 +32,7 @@ class NibiruClient extends DiscordTS {
         .then(() => {
             // For slash commands
             this.clearSlashes(); 
+            //this.clearSlashes("550144880655990785");
             this.initSlashes();
             // todo: Add a real logger...
             console.log(`Logged in as ${this.user.tag} (${this.user.id})`)

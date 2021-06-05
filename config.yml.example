@@ -5,3 +5,5 @@ botConfig:
       botToken: 'YOUR_TOKEN_HERE'
       # This is the default prefix the bot will use. While the bot normally uses slash commands, it can also use normal command prefixes.
       botPrefix: 'n+'
+      # This is the bot owner ID. You can get your ID by enabling "Developer Mode" and right clicking your name and clicking "Copy ID".
+      botOwner: '145788286156144641'
