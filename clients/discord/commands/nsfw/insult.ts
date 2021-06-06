@@ -13,12 +13,6 @@ export abstract class InsultCommand {
         victim: ClientUser,
         interaction: CommandInteraction
     ) {
-        if (victim == null) {
-            interaction.reply(`<@${interaction.user.id}>, ${Insult.Insult()}`);
-        }
-
-        else {
-            interaction.reply(`<@${victim}>, ${Insult.Insult()}`);
-        }
+        interaction.reply(`<@${victim ? victim : interaction.user.id}>, ${Insult.Insult()}`)
     }
 }

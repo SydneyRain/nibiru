@@ -17,15 +17,10 @@ export abstract class UrbanCommand {
         //todo: Add buttons to go through definitions
         await axios.get(`https://api.urbandictionary.com/v0/define?term=${wordToLookup}`).then(res =>
         {
-            if (res.status != 200) {
-                return interaction.reply('Error fetching data from Urban Dictionary :( Please try again later!');
-            }
+            if (res.status != 200) { return interaction.reply('Error fetching data from Urban Dictionary :( Please try again later!'); }
+            if (res.data?.list.length <= 0) { return interaction.reply('No results for this word were found...') }
 
-            if (res.data?.list.length <= 0) {
-                return interaction.reply('No results for this word were found...')
-            }
-
-            let wordResult = res.data.list[0];
+            let wordResult:any = res.data.list[0];
 
             interaction.reply({
                 embeds: [
