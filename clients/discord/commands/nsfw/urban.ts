@@ -3,7 +3,7 @@ import { Description, Discord, Option, Slash } from "@typeit/discord";
 import { CommandInteraction, MessageEmbed } from "discord.js";
 /*---------------------------------------------------*/
 import axios from "axios";
-import { resourceLimits } from "worker_threads";
+/*---------------------------------------------------*/
 
 @Discord()
 export abstract class UrbanCommand {
