@@ -13,6 +13,6 @@ export abstract class InsultCommand {
         victim: ClientUser,
         interaction: CommandInteraction
     ) {
-        interaction.reply(`<@${victim ? victim : interaction.user.id}>, ${Insult.Insult()}`)
+        return interaction.reply(`<@${victim ? victim : interaction.user.id}>, ${Insult.Insult()}`);
     }
 }
