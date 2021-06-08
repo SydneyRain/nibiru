@@ -7,3 +7,5 @@ botConfig:
       botPrefix: 'n.'
       # This is the bot owner ID. You can get your ID by enabling "Developer Mode" and right clicking your name and clicking "Copy ID".
       botOwner: '145788286156144641'
+      # This is the amount of shards your bot will use.
+      shardCount: '1'

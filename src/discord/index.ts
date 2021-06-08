@@ -1,5 +1,5 @@
 /*---------------------------------------------------*/
-import { ClusterClient, CommandClient, SlashCommandClient } from "detritus-client";
+import { CommandClient, ShardClient, SlashCommandClient } from "detritus-client";
 /*---------------------------------------------------*/
 import YAML from "yaml";
 import * as fs from 'fs';
@@ -7,21 +7,19 @@ import * as fs from 'fs';
 const file = fs.readFileSync('./config.yaml', 'utf8')
 const config = YAML.parse(file)
 /*---------------------------------------------------*/
-const cluster = new ClusterClient(config.botConfig.discordConfig.botToken)
-/*---------------------------------------------------*/
+const shard = new ShardClient(config.botConfig.discordConfig.botToken)
 
-// Todo: actual logs...
-
-const commandClient = new CommandClient(cluster, {
-    prefix: config.botConfig.discordConfig.botPrefix
+const commandClient = new CommandClient(shard, {
+    prefix: config.botConfig.discordConfig.botPrefix,
+    useClusterClient: true,
+    shardCount: 1
 });
 
-const slashClient = new SlashCommandClient(cluster);
+const slashClient = new SlashCommandClient(shard);
 
 (async () => {
-    
     // Run everything
-    await cluster.run();
+    const client = await shard.run();
     
     // Load commands
     await commandClient.addMultipleIn(`${__dirname}/commands`, {isAbsolute: true, subdirectories: true}).catch((...err) => {
@@ -35,10 +33,10 @@ const slashClient = new SlashCommandClient(cluster);
         console.log(err);
     });
 
-    console.log("Slash commands loaded!");
+    console.log("Slash commands loaded!\n");
     
     await commandClient.run();
     await slashClient.run();
 
-    console.log(`Bot logged on! ${slashClient.commands.size} slash commands, ${commandClient.commands.length} commands`);
+    console.log(`Logged on as ${client.user?.toString()}!\nStatistics:\n${commandClient.commands.length} commands,\n${slashClient.commands.size} slash commands,\n${client.shardCount} shards`);
 })();
