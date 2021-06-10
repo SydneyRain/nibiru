@@ -2,3 +2,5 @@ node_modules
 out
 config.yaml
 *.code-workspace
+_cache
+img/

@@ -3,6 +3,7 @@ Make it check if it has embed permissions (if not send a plain text version)
 Buttons to go to the next definiton
 */
 import { CommandClient } from "detritus-client";
+import { Permissions } from 'detritus-client/lib/constants';
 import { Context } from "detritus-client/lib/command";
 import { Embed } from "detritus-client/lib/utils";
 import { BaseCommand } from '../../structures/BaseCommand';
@@ -24,6 +25,11 @@ export default class UrbanCommand extends BaseCommand {
   constructor(client: CommandClient) {
     super(client, {
       name: COMMAND_NAME,
+      permissionsClient: [
+        Permissions.SEND_MESSAGES,
+        Permissions.EMBED_LINKS,
+      ],
+      onPermissionsFailClient: (context) => context.reply(`Error: Missing Embed permissions!`),
       aliases: [
         'ub'
       ],
