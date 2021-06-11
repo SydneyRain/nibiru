@@ -60,7 +60,7 @@ export default class CryptoPriceCommand extends BaseCommand {
         .addField('Volume (24h)', `USD$${Math.round(finalResult[0].quotes.USD.volume_24h)} (${Math.round(finalResult[0].quotes.USD.volume_24h_change_24h)}%)`, true)
         .addField('Change', `1h: ${Math.round(finalResult[0].quotes.USD.percent_change_1h)}%\n12h: ${Math.round(finalResult[0].quotes.USD.percent_change_12h)}%\n24h: ${Math.round(finalResult[0].quotes.USD.percent_change_24h)}%\n7d: ${Math.round(finalResult[0].quotes.USD.percent_change_7d)}%\n30d: ${Math.round(finalResult[0].quotes.USD.percent_change_30d)}%\n1y: ${Math.round(finalResult[0].quotes.USD.percent_change_1y)}%`, true)
         .addField('Circulating Supply', finalResult[0].circulating_supply, true)
-        .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getUTCDate()}-${updated.getMonth() + 1}-${updated.getFullYear()} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
+        .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getFullYear()}-${updated.getMonth() + 1}-${updated.getUTCDate()} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
     return context.respond(InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE, {embed, file: {
         filename: 'logo.png',
         value: fs.readFileSync(`./img/crypto_icons/${finalResult[0].id}.png`)

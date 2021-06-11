@@ -73,14 +73,14 @@ export default class PriceCommand extends BaseCommand {
         .setDescription(`[Click here to view chart](https://coinpaprika.com/coin/${finalResult[0].id}/)`)
         .setColor(0xfe3813)
         .setThumbnail(`attachment://logo.png`)
+        .setThumbnail(`attachment://logo.png`)
         .addField('Current Price', `USD$${finalResult[0].quotes.USD.price} (${Math.round(finalResult[0].quotes.USD.market_cap_change_24h)}%)`, true)
         .addField('Market Cap', `USD$${Math.round(finalResult[0].quotes.USD.market_cap)} (rank ${finalResult[0].rank})`, true)
-        .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getUTCDate()}-${athDate.getMonth() + 1}-${athDate.getFullYear()} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
+        .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getFullYear()}-${athDate.getUTCDate()}-${athDate.getMonth() + 1} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
         .addField('Volume (24h)', `USD$${Math.round(finalResult[0].quotes.USD.volume_24h)} (${Math.round(finalResult[0].quotes.USD.volume_24h_change_24h)}%)`, true)
         .addField('Change', `1h: ${Math.round(finalResult[0].quotes.USD.percent_change_1h)}%\n12h: ${Math.round(finalResult[0].quotes.USD.percent_change_12h)}%\n24h: ${Math.round(finalResult[0].quotes.USD.percent_change_24h)}%\n7d: ${Math.round(finalResult[0].quotes.USD.percent_change_7d)}%\n30d: ${Math.round(finalResult[0].quotes.USD.percent_change_30d)}%\n1y: ${Math.round(finalResult[0].quotes.USD.percent_change_1y)}%`, true)
         .addField('Circulating Supply', finalResult[0].circulating_supply, true)
-        .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getUTCDate()}-${updated.getMonth() + 1}-${updated.getFullYear()} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
-      
+        .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getFullYear()}-${updated.getMonth() + 1}-${updated.getUTCDate()} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
       message.reply({embed, file: {
         filename: 'logo.png',
         value: fs.readFileSync(`./img/crypto_icons/${finalResult[0].id}.png`)
