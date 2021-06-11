@@ -56,7 +56,7 @@ export default class CryptoPriceCommand extends BaseCommand {
         .setThumbnail(`attachment://logo.png`)
         .addField('Current Price', `USD$${finalResult[0].quotes.USD.price} (${Math.round(finalResult[0].quotes.USD.market_cap_change_24h)}%)`, true)
         .addField('Market Cap', `USD$${Math.round(finalResult[0].quotes.USD.market_cap)} (rank ${finalResult[0].rank})`, true)
-        .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getUTCDate()}-${athDate.getMonth() + 1}-${athDate.getFullYear()} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
+        .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getFullYear()}-${athDate.getUTCDate()}-${athDate.getMonth() + 1} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
         .addField('Volume (24h)', `USD$${Math.round(finalResult[0].quotes.USD.volume_24h)} (${Math.round(finalResult[0].quotes.USD.volume_24h_change_24h)}%)`, true)
         .addField('Change', `1h: ${Math.round(finalResult[0].quotes.USD.percent_change_1h)}%\n12h: ${Math.round(finalResult[0].quotes.USD.percent_change_12h)}%\n24h: ${Math.round(finalResult[0].quotes.USD.percent_change_24h)}%\n7d: ${Math.round(finalResult[0].quotes.USD.percent_change_7d)}%\n30d: ${Math.round(finalResult[0].quotes.USD.percent_change_30d)}%\n1y: ${Math.round(finalResult[0].quotes.USD.percent_change_1y)}%`, true)
         .addField('Circulating Supply', finalResult[0].circulating_supply, true)

@@ -73,7 +73,6 @@ export default class PriceCommand extends BaseCommand {
         .setDescription(`[Click here to view chart](https://coinpaprika.com/coin/${finalResult[0].id}/)`)
         .setColor(0xfe3813)
         .setThumbnail(`attachment://logo.png`)
-        .setThumbnail(`attachment://logo.png`)
         .addField('Current Price', `USD$${finalResult[0].quotes.USD.price} (${Math.round(finalResult[0].quotes.USD.market_cap_change_24h)}%)`, true)
         .addField('Market Cap', `USD$${Math.round(finalResult[0].quotes.USD.market_cap)} (rank ${finalResult[0].rank})`, true)
         .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getFullYear()}-${athDate.getUTCDate()}-${athDate.getMonth() + 1} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
