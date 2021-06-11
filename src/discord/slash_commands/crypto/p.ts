@@ -1,68 +1,49 @@
-import { CommandClient } from "detritus-client";
-import { Permissions } from 'detritus-client/lib/constants';
-import { Context } from "detritus-client/lib/command";
-import { Embed } from "detritus-client/lib/utils";
-import { BaseCommand } from '../../structures/BaseCommand';
+import { Slash } from 'detritus-client';
+import { ApplicationCommandOptionTypes, InteractionCallbackTypes } from 'detritus-client/lib/constants';
+import { Embed } from 'detritus-client/lib/utils';
+import { BaseCommand } from "../../structures/BaseCommandSlash";
 /*---------------------------------------------------*/
 import * as fs from 'fs';
 /*---------------------------------------------------*/
 
-export interface CommandArgsBefore {
-  cryptoToLookup: string
-}
-
-export interface CommandArgs {
-    cryptoToLookup: string
-}
-
 export const COMMAND_NAME = 'p';
 
-export default class PriceCommand extends BaseCommand {
-  constructor(client: CommandClient) {
-    super(client, {
-      name: COMMAND_NAME,
-      permissionsClient: [
-        Permissions.SEND_MESSAGES,
-        Permissions.EMBED_LINKS,
+export interface CommandArgs {
+  crypto: string
+}
+
+export default class CryptoPriceCommand extends BaseCommand {
+  description = 'Look up a cryptocurrency\'s current price. Currently supports over 3000 different coins.';
+  name = COMMAND_NAME;
+
+  constructor() {
+    super({
+      options: [
+        {name: 'crypto', type: ApplicationCommandOptionTypes.STRING, description: 'The crypto to look up.', required: true}
       ],
-      onPermissionsFailClient: (context) => context.reply(`Error: Missing Embed permissions!`),
-      aliases: [
-        'price'
-      ],
-      label: 'cryptoToLookup',
-      metadata: {
-        description: 'Look up a cryptocurrency\'s current price. Currently supports over 3000 different coins.',
-        examples: [COMMAND_NAME],
-        type: 'crypto',
-        usage: `${COMMAND_NAME}`,
-        botOwner: false,
-        nsfw: false
-      }
-    });
+    })
   }
 
-  async run(payload: Context, args: CommandArgs): Promise<any> {
-      const message = payload.message;
-
+  async run(context: Slash.SlashContext, args: CommandArgs) {
       let ticker = fs.readFileSync('./_cache/tickers.json', 'utf8') 
       let tickerJSON = JSON.parse(ticker);
-      let finalResult = tickerJSON.filter((a: { symbol: string; }) => a.symbol == args.cryptoToLookup)
+      let finalResult = tickerJSON.filter((a: { symbol: string; }) => a.symbol == args.crypto)
 
       // If the coin is not found, try to search for the name of the coin by capitalizing the first letter. 
       if (Object.keys(finalResult).length === 0) {
-        let capitalizeLetter = args.cryptoToLookup.charAt(0).toUpperCase() + args.cryptoToLookup.slice(1);
+        let capitalizeLetter = args.crypto.charAt(0).toUpperCase() + args.crypto.slice(1);
         finalResult = tickerJSON.filter((a: { name: string; }) => a.name == capitalizeLetter);
       }
 
       // If the coin still isn't found, try to convert all the letters to uppercase and search for the symbol
       if (Object.keys(finalResult).length === 0) {
-        let capitalizeAllLetters = args.cryptoToLookup.toUpperCase();
+        let capitalizeAllLetters = args.crypto.toUpperCase();
         finalResult = tickerJSON.filter((a: { symbol: string; }) => a.symbol == capitalizeAllLetters);
       }
 
       // If the coin *STILL* is somehow not found, the coin likely does not exist
       if (Object.keys(finalResult).length === 0) {
-        return message.reply("That coin was not found.");
+        return context.respond(InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE, "That coin was not found.");
       }
 
       let embed = new Embed();
@@ -80,10 +61,9 @@ export default class PriceCommand extends BaseCommand {
         .addField('Change', `1h: ${Math.round(finalResult[0].quotes.USD.percent_change_1h)}%\n12h: ${Math.round(finalResult[0].quotes.USD.percent_change_12h)}%\n24h: ${Math.round(finalResult[0].quotes.USD.percent_change_24h)}%\n7d: ${Math.round(finalResult[0].quotes.USD.percent_change_7d)}%\n30d: ${Math.round(finalResult[0].quotes.USD.percent_change_30d)}%\n1y: ${Math.round(finalResult[0].quotes.USD.percent_change_1y)}%`, true)
         .addField('Circulating Supply', finalResult[0].circulating_supply, true)
         .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getUTCDate()}-${updated.getMonth() + 1}-${updated.getFullYear()} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
-      
-      message.reply({embed, file: {
+    return context.respond(InteractionCallbackTypes.CHANNEL_MESSAGE_WITH_SOURCE, {embed, file: {
         filename: 'logo.png',
         value: fs.readFileSync(`./img/crypto_icons/${finalResult[0].id}.png`)
-      }});
+    }});
   }
-}
+};
