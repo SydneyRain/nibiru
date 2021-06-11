@@ -32,7 +32,10 @@ export default class PriceCommand extends BaseCommand {
       label: 'cryptoToLookup',
       metadata: {
         description: 'Look up a cryptocurrency\'s current price. Currently supports over 3000 different coins.',
-        examples: [COMMAND_NAME],
+        examples: [`${COMMAND_NAME} BTC`,
+        `${COMMAND_NAME} Dogecoin`,
+        `${COMMAND_NAME} litecoin`
+        ],
         type: 'crypto',
         usage: `${COMMAND_NAME}`,
         botOwner: false,
@@ -75,11 +78,11 @@ export default class PriceCommand extends BaseCommand {
         .setThumbnail(`attachment://logo.png`)
         .addField('Current Price', `USD$${finalResult[0].quotes.USD.price} (${Math.round(finalResult[0].quotes.USD.market_cap_change_24h)}%)`, true)
         .addField('Market Cap', `USD$${Math.round(finalResult[0].quotes.USD.market_cap)} (rank ${finalResult[0].rank})`, true)
-        .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getFullYear()}-${athDate.getUTCDate()}-${athDate.getMonth() + 1} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
+        .addField('ATH', `USD$${finalResult[0].quotes.USD.ath_price} (${athDate.getFullYear()}-${("0" + (athDate.getMonth() + 1)).slice(-2)}-${("0" + (athDate.getUTCDate())).slice(-2)} ${athDate.getHours()}:${(athDate.getMinutes()<10?'0':'') + athDate.getMinutes()} UTC)`, true)
         .addField('Volume (24h)', `USD$${Math.round(finalResult[0].quotes.USD.volume_24h)} (${Math.round(finalResult[0].quotes.USD.volume_24h_change_24h)}%)`, true)
         .addField('Change', `1h: ${Math.round(finalResult[0].quotes.USD.percent_change_1h)}%\n12h: ${Math.round(finalResult[0].quotes.USD.percent_change_12h)}%\n24h: ${Math.round(finalResult[0].quotes.USD.percent_change_24h)}%\n7d: ${Math.round(finalResult[0].quotes.USD.percent_change_7d)}%\n30d: ${Math.round(finalResult[0].quotes.USD.percent_change_30d)}%\n1y: ${Math.round(finalResult[0].quotes.USD.percent_change_1y)}%`, true)
         .addField('Circulating Supply', finalResult[0].circulating_supply, true)
-        .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getFullYear()}-${updated.getMonth() + 1}-${updated.getUTCDate()} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
+        .setFooter(`Data provided by Coinpaprika. Last updated at ${updated.getFullYear()}-${("0" + (updated.getMonth() + 1)).slice(-2)}-${("0" + (updated.getUTCDate())).slice(-2)} ${updated.getHours()}:${(updated.getMinutes()<10?'0':'') + updated.getMinutes()} UTC`)
       message.reply({embed, file: {
         filename: 'logo.png',
         value: fs.readFileSync(`./img/crypto_icons/${finalResult[0].id}.png`)
