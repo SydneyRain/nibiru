@@ -7,6 +7,7 @@ import { isSnowflake } from '../../structures/checks';
 export const COMMAND_NAME = 'avatar';
   
 export interface CommandArgs {
+    noembed: boolean,
     user: string,
 }
 
@@ -14,33 +15,39 @@ export default class AvatarCommand extends BaseCommand {
   constructor(client: CommandClient) {
     super(client, {
       name: COMMAND_NAME,
+      args: [
+        {name: 'noembed', default: false, type: () => true},
+      ],
       label: 'user',
       permissionsClient: [
-        Permissions.SEND_MESSAGES,
-        Permissions.EMBED_LINKS,
+        Permissions.SEND_MESSAGES
       ],
-      onPermissionsFailClient: (context) => context.reply(`Error: Missing Embed permissions!`),
       aliases: [
         'av',
       ],
       metadata: {
         description: 'Get a user\'s avatar.',
-        examples: [COMMAND_NAME],
+        examples: [`${COMMAND_NAME}`,
+        `${COMMAND_NAME} 848374473701720074`,
+        `${COMMAND_NAME} @neetqueen`
+        ],
         type: 'utility',
-        usage: `${COMMAND_NAME}`,
+        usage: '?<user:id|mention> (-noembed)',
         botOwner: false,
         nsfw: false
       }
     });
   }
 
+
   async run(payload: Command.Context, args: CommandArgs): Promise<any> {
     let message = payload.message;
     let argsUser = args.user ? args.user : payload.user.id;
-    //let userAvatar = payload.users.get(argsUser);
 
     const { matches } = discordRegex(DiscordRegexNames.MENTION_USER, argsUser) as {matches: Array<{id: string}>};
     const embed = new Embed();
+
+    if(!payload.message.channel?.can(Permissions.EMBED_LINKS)) args.noembed = true;
 
     if (matches.length) {
       const { id: userId } = matches[0];
@@ -50,13 +57,21 @@ export default class AvatarCommand extends BaseCommand {
 
         if (userAvatar == undefined) {
           let userAvatar = payload.rest.fetchUser(argsUser);
-          embed.setAuthor(`${(await userAvatar).name}#${(await userAvatar)?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png`)
-          embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=2048)`)
-          .setImage(`https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=512`)
+          if(!args.noembed) {
+            embed.setAuthor(`${(await userAvatar).name}#${(await userAvatar)?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png`)
+            embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=2048)`)
+            .setImage(`https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=512`)
+          } else {
+            message.reply(`**${(await userAvatar).name}#${(await userAvatar)?.discriminator}**'s Avatar URL is: https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png`)
+          }
         } else {
-          embed.setAuthor(`${userAvatar?.name}#${userAvatar?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png`)
-          embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=2048)`)
-          .setImage(`https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=512`)
+          if (!args.noembed) {
+            embed.setAuthor(`${userAvatar?.name}#${userAvatar?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png`)
+            embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=2048)`)
+            .setImage(`https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=512`)
+          } else {
+            message.reply(`**${userAvatar?.name}#${userAvatar?.discriminator}**'s Avatar URL is: https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png`)
+          }
         }
       } else {
         return message.reply("Invalid Snowflake ID.");
@@ -73,13 +88,21 @@ export default class AvatarCommand extends BaseCommand {
 
           if (userAvatar == undefined) {
             let userAvatar = payload.rest.fetchUser(finalId[0].text);
-            embed.setAuthor(`${(await userAvatar).name}#${(await userAvatar)?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png`)
-            embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=2048)`)
-            .setImage(`https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=512`)
+            if(!args.noembed) {
+              embed.setAuthor(`${(await userAvatar).name}#${(await userAvatar)?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png`)
+              embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=2048)`)
+              .setImage(`https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png?size=512`)
+            } else {
+              message.reply(`**${(await userAvatar).name}#${(await userAvatar)?.discriminator}**'s Avatar URL is: https://cdn.discordapp.com/avatars/${(await userAvatar)?.id}/${(await userAvatar)?.avatar}.png`)
+            }
           } else {
-            embed.setAuthor(`${userAvatar?.name}#${userAvatar?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png`)
-            embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=2048)`)
-            .setImage(`https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=512`)
+            if(!args.noembed) {
+              embed.setAuthor(`${userAvatar?.name}#${userAvatar?.discriminator}'s Avatar`, `https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png`)
+              embed.setDescription(`[Click here for full size](https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=2048)`)
+              .setImage(`https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png?size=512`)
+            } else {
+              message.reply(`**${userAvatar?.name}#${userAvatar?.discriminator}**'s Avatar URL is: https://cdn.discordapp.com/avatars/${userAvatar?.id}/${userAvatar?.avatar}.png`)
+            }
           }
         }
       } else {
@@ -87,7 +110,9 @@ export default class AvatarCommand extends BaseCommand {
       }
     }
     
-    embed.setColor(0x32cd32)
-    message.reply({embed}).catch(err => message.reply("Invalid user provided or error occurred"));
+    if (!args.noembed) {
+      embed.setColor(0x32cd32)
+      message.reply({embed}).catch(err => message.reply("Invalid user provided or error occurred"));
+    }
   }
 }
