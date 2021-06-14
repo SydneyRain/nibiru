@@ -4,15 +4,12 @@ Validate URL/IP address.
 import { CommandClient } from "detritus-client";
 import { BaseCommand } from '../../structures/BaseCommand';
 import { Context } from "detritus-client/lib/command";
+import { Markup } from "detritus-client/lib/utils";
 /*---------------------------------------------------*/
 import * as Ping from "ping";
 /*---------------------------------------------------*/
 
 export const COMMAND_NAME = 'ping';
-
-export interface CommandArgsBefore {
-  website: string
-}
 
 export interface CommandArgs {
   website: string
@@ -46,7 +43,7 @@ export default class PingCommand extends BaseCommand {
     }
 
     Ping.promise.probe(args.website).then(function (res) {
-      return message.reply(`\`\`\`${res.output || "An unknown error has occurred"}\`\`\``)
+      return message.reply(Markup.codeblock(`${res.output || "An unknown error has occurred"}`));
     });
   }
 }

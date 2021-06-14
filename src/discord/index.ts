@@ -12,7 +12,7 @@ const shard = new ShardClient(config.botConfig.discordConfig.botToken)
 const commandClient = new CommandClient(shard, {
     prefix: config.botConfig.discordConfig.botPrefix,
     useClusterClient: true,
-    shardCount: 1
+    shardCount: 0
 });
 
 const slashClient = new SlashCommandClient(shard);

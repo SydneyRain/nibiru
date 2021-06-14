@@ -1,16 +1,18 @@
 import { CommandClient } from "detritus-client";
 import { Permissions } from 'detritus-client/lib/constants';
 import { Context } from "detritus-client/lib/command";
-import { Embed } from "detritus-client/lib/utils";
+import { Embed } from 'detritus-client/lib/utils';
 import { BaseCommand } from '../../structures/BaseCommand';
+/*---------------------------------------------------*/
+import * as fs from 'fs';
 /*---------------------------------------------------*/
 
 export interface CommandArgsBefore {
-  question: string
+  cryptotoLookup: string
 }
 
 export interface CommandArgs {
-  question: string
+  cryptotoLookup: string
 }
 
 export const COMMAND_NAME = 'dex';
@@ -34,7 +36,7 @@ export default class DexCommand extends BaseCommand {
         'pancake',
         'pancakeswap',
       ],
-      label: 'question',
+      label: 'cryptotoLookup',
       metadata: {
         description: 'View price and information of DeFi tokens. Currently supports Uniswap and Pancakeswap tokens.',
         examples: [COMMAND_NAME],
@@ -47,6 +49,23 @@ export default class DexCommand extends BaseCommand {
   }
 
   async run(payload: Context, args: CommandArgs): Promise<any> {
-    console.log("Unimplemented");
+    const message = payload.message;
+
+    let embed = new Embed();
+
+    embed.setTitle(`test`)
+      .setDescription(`[Click here to view chart](https://charts.bogged.finance/?token=)`)
+      .setColor(0xfe3813)
+      .setThumbnail(`attachment://logo.png`)
+      .addField('Current Price', `USD$ (%)`, true)
+      .addField('Market Cap', `USD$`, true)
+      .addField('Volume', `USD$`, true)
+      .addField('Liquidity', `USD$`, true)
+  
+      .setFooter(`Last updated at 2021-06-11 20:31 UTC`)
+    message.reply({embed, file: {
+      filename: 'logo.png',
+      value: fs.readFileSync(`./img/crypto_icons/bnb-binance-coin.png`)
+    }});
   }
 }
